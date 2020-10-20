@@ -17,7 +17,7 @@ import java.util.Properties;
 public class DriverFactory {
 
     private final String browser;
-    private final ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
+    WebDriver driver;
     File file = new File("src\\test\\resources\\saucelabcreds.properties");
 
     public DriverFactory(String browser) {
@@ -28,15 +28,15 @@ public class DriverFactory {
         switch (browser) {
             case "chrome":
                 System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
-                driver.set(new ChromeDriver());
+                driver = new ChromeDriver();
                 break;
 
             case "firefox":
                 System.setProperty("webdriver.gecko.driver", "src/main/resources/geckodriver.exe");
-                driver.set(new FirefoxDriver());
+                driver = new FirefoxDriver();
                 break;
         }
-        return driver.get();
+        return driver;
     }
 
     public WebDriver getDriverGrid() {
@@ -51,11 +51,11 @@ public class DriverFactory {
                 break;
         }
         try {
-            driver.set(new RemoteWebDriver(new URL(hubUrl), capabilities));
+            driver = new RemoteWebDriver(new URL(hubUrl), capabilities);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        return driver.get();
+        return driver;
     }
 
     public WebDriver getSauceDriverGrid() {
@@ -84,10 +84,10 @@ public class DriverFactory {
                 break;
         }
         try {
-            driver.set(new RemoteWebDriver(new URL(URL), browserOptions));
+            driver = new RemoteWebDriver(new URL(URL), browserOptions);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        return driver.get();
+        return driver;
     }
 }
