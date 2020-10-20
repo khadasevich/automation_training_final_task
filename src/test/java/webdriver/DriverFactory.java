@@ -16,8 +16,8 @@ import java.util.Properties;
 
 public class DriverFactory {
 
-    private String browser;
-    private ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
+    private final String browser;
+    private final ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
     File file = new File("src\\test\\resources\\saucelabcreds.properties");
 
     public DriverFactory(String browser) {
