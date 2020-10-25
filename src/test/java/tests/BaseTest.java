@@ -23,7 +23,7 @@ public class BaseTest {
     }
 
     @BeforeClass
-    @Parameters({ "browser", "environment" })
+    @Parameters({"browser", "environment"})
     protected void setUp(@Optional("chrome") String browser, @Optional("local") String environment) {
         driverManager = new DriverManager("local", "chrome");
         driver = driverManager.getWebDriver();
