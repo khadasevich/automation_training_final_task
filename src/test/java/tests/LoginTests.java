@@ -23,21 +23,25 @@ import java.util.Map;
 public class LoginTests extends BaseTest {
 
 
-    @Test(dataProvider = "data", priority = 0, description = "GM-1 Login to gmail with valid credentials")
+    @Test(dataProvider = "credentials", priority = 1, description = "GM-1 Login to gmail with valid credentials")
     @Description("Test goes through list of accounts and logs into gmail")
     public void loginTest(String username, String password) {
-        loginPage.openLoginPage();
-        loginPage.submitUsername(username);
-        loginPage.submitPassword(password);
-        driverManager.waitUntilItemWillBeShown(loginPage.getStackOverflowContent());
+        goThroughLogin(username, password);
         loginPage.goToInbox();
         String actualResult = gmailMainPage.getLoggedUserText();
         gmailMainPage.logout();
         selectAccountPage.removeAccount();
-        Assert.assertTrue(actualResult.contains(username+"1"));
+        Assert.assertTrue(actualResult.contains(username));
     }
 
-    @DataProvider( name = "data" )
+    public void goThroughLogin(String username, String password) {
+        loginPage.openLoginPage();
+        loginPage.submitUsername(username);
+        loginPage.submitPassword(password);
+        driverManager.waitUntilItemWillBeShown(loginPage.getStackOverflowContent());
+    }
+
+    @DataProvider(name = "credentials")
     public static Object[][] getJSON(ITestContext context) throws FileNotFoundException {
         String filename = "C:\\Testing\\AutomationTrainingFinalTask\\src\\test\\resources\\test_data";
         JsonArray array = new JsonParser().parse(new FileReader(filename))
