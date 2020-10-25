@@ -32,25 +32,25 @@ public class LoginPage extends WebAbstractPage {
         super(driver);
     }
 
-    @Step
+    @Step("Go to the Stackoverflow and start log in via Google")
     public void openLoginPage() {
         driver.get(baseStackUrl);
         loginWithGoogle.click();
     }
 
-    @Step
+    @Step("Submit username {0}")
     public void submitUsername(String username) {
         usernameField.sendKeys(username);
         usernameNextButton.click();
     }
 
-    @Step
+    @Step("Submit password {0}")
     public void submitPassword(String password) {
         passwordField.sendKeys(password);
         passwordNextButton.click();
     }
 
-    @Step
+    @Step("Go to the Gmail Inbox")
     public void goToInbox() {
         driver.get(baseInboxUrl);
     }

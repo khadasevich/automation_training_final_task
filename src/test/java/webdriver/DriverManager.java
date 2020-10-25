@@ -1,12 +1,10 @@
 package webdriver;
 
-import org.apache.commons.io.FileUtils;
+import io.qameta.allure.Attachment;
 import org.openqa.selenium.*;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
-
-import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
@@ -68,15 +66,17 @@ public class DriverManager {
         fluentWait.until(ExpectedConditions.visibilityOf(element));
     }
 
-    public void takeScreenshot(String pathToFile) {
+    @Attachment
+    public byte[] takeScreenshot() {
         TakesScreenshot screenshot = ((TakesScreenshot) driver.get());
-        File sourceFile = screenshot.getScreenshotAs(OutputType.FILE);
-        File destinationFile = new File(pathToFile);
-        try {
-            FileUtils.copyFile(sourceFile, destinationFile);
-        } catch (
-                IOException e) {
-            e.printStackTrace();
-        }
+        return screenshot.getScreenshotAs(OutputType.BYTES);
+    }
+
+    @Attachment
+    public String browserVersion() {
+        Capabilities caps = ((RemoteWebDriver) driver.get()).getCapabilities();
+        String browserName = caps.getBrowserName();
+        String browserVersion = caps.getVersion();
+        return browserName+" "+browserVersion;
     }
 }

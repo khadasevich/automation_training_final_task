@@ -20,7 +20,7 @@ public class GmailMainPage extends WebAbstractPage {
         super(driver);
     }
 
-    @Step
+    @Step("Return Info Of the Logged in User")
     public String getLoggedUserText() {
         userIcon.click();
         String accInfo = accountInfo.getText();
@@ -28,7 +28,7 @@ public class GmailMainPage extends WebAbstractPage {
         return accInfo;
     }
 
-    @Step
+    @Step("Log out from account")
     public void logout() {
         userIcon.click();
         logOutButton.click();
