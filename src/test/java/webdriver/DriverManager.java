@@ -1,11 +1,13 @@
 package webdriver;
 
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class DriverManager {
@@ -13,6 +15,7 @@ public class DriverManager {
     private final String environment;
     private final String browser;
     private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    private static FluentWait<WebDriver> fluentWait;
 
     public DriverManager(String environment, String browser) {
         this.environment = environment;
@@ -27,7 +30,7 @@ public class DriverManager {
                     driver.set(newDriver.getDriver());
                 } else if (environment.equalsIgnoreCase("grid")) {
                     driver.set(newDriver.getDriverGrid());
-                } else {
+                } else if (environment.equalsIgnoreCase("sauce")) {
                     driver.set(newDriver.getSauceDriverGrid());
                 }
             } catch (Exception e) {
@@ -37,28 +40,35 @@ public class DriverManager {
         return driver.get();
     }
 
-    public static void quitDriver() {
+    public void quitDriver() {
         driver.get().close();
         driver.get().quit();
     }
 
-    public static void setTimeout() {
+    public void setTimeout() {
         driver.get().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
         driver.get().manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
     }
 
-    public static void removeTimeout() {
+    public void removeTimeout() {
         driver.get().manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         driver.get().manage().timeouts().pageLoadTimeout(0, TimeUnit.SECONDS);
         driver.get().manage().timeouts().setScriptTimeout(0, TimeUnit.SECONDS);
     }
 
-    public static void maximizeWindow() {
+    public void maximizeWindow() {
         driver.get().manage().window().maximize();
     }
 
-    public static void takeScreenshot(String pathToFile) {
+    public void waitUntilItemWillBeShown (WebElement element) {
+        fluentWait = new FluentWait<>(driver.get())
+                .withTimeout(Duration.ofSeconds(20))
+                .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class);
+        fluentWait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public void takeScreenshot(String pathToFile) {
         TakesScreenshot screenshot = ((TakesScreenshot) driver.get());
         File sourceFile = screenshot.getScreenshotAs(OutputType.FILE);
         File destinationFile = new File(pathToFile);

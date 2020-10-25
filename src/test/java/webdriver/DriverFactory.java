@@ -3,7 +3,9 @@ package webdriver;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -12,12 +14,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Properties;
 
 public class DriverFactory {
 
     private final String browser;
     WebDriver driver;
+    final static ChromeOptions chromeOptions = new ChromeOptions();
+    final static FirefoxOptions firefoxOptions = new FirefoxOptions();
     File file = new File("src\\test\\resources\\saucelabcreds.properties");
 
     public DriverFactory(String browser) {
@@ -27,13 +32,13 @@ public class DriverFactory {
     public WebDriver getDriver() {
         switch (browser) {
             case "chrome":
-                System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
-                driver = new ChromeDriver();
+                System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
+                driver = new ChromeDriver(chromeOptions);
                 break;
 
             case "firefox":
-                System.setProperty("webdriver.gecko.driver", "src/main/resources/geckodriver.exe");
-                driver = new FirefoxDriver();
+                System.setProperty("webdriver.gecko.driver", "src\\test\\resources\\geckodriver.exe");
+                driver = new FirefoxDriver(firefoxOptions);
                 break;
         }
         return driver;
@@ -45,9 +50,11 @@ public class DriverFactory {
         switch (browser) {
             case "chrome":
                 capabilities.setBrowserName(DesiredCapabilities.chrome().getBrowserName());
+                capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
                 break;
             case "firefox":
                 capabilities.setBrowserName(DesiredCapabilities.firefox().getBrowserName());
+                capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
                 break;
         }
         try {
@@ -72,12 +79,14 @@ public class DriverFactory {
         switch (browser) {
             case "chrome":
                 browserOptions.setBrowserName(DesiredCapabilities.chrome().getBrowserName());
+                browserOptions.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
                 browserOptions.setCapability("platformName", "Windows 10");
                 browserOptions.setCapability("browserVersion", "latest");
                 browserOptions.setCapability("sauce:options", sauceOptions);
                 break;
             case "firefox":
                 browserOptions.setBrowserName(DesiredCapabilities.firefox().getBrowserName());
+                browserOptions.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
                 browserOptions.setCapability("platformName", "Windows 10");
                 browserOptions.setCapability("browserVersion", "latest");
                 browserOptions.setCapability("sauce:options", sauceOptions);
