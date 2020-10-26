@@ -1,5 +1,6 @@
 package tools;
 
+import com.github.javafaker.Faker;
 import io.qameta.allure.Attachment;
 
 import java.time.LocalDateTime;
@@ -17,5 +18,10 @@ public class TestTools {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         return dtf.format(now);
+    }
+
+    public static String fakeMessageGenerator() {
+        Faker faker = new Faker();
+        return faker.chuckNorris().fact();
     }
 }

@@ -25,7 +25,7 @@ public class BaseTest {
     @BeforeClass
     @Parameters({"browser", "environment"})
     protected void setUp(@Optional("chrome") String browser, @Optional("local") String environment) {
-        driverManager = new DriverManager("local", "chrome");
+        driverManager = new DriverManager(environment, browser);
         driver = driverManager.getWebDriver();
         loginPage = new LoginPage(driver);
         gmailMainPage = new GmailMainPage(driver);
@@ -37,5 +37,20 @@ public class BaseTest {
     @AfterClass
     public void tearDown() {
         driverManager.quitDriver();
+    }
+
+    public void goThroughLogin(String username, String password) {
+        loginPage.openLoginPage();
+        loginPage.submitUsername(username);
+        loginPage.submitPassword(password);
+        driverManager.waitUntilItemWillBeShown(loginPage.getStackOverflowContent());
+        loginPage.goToInbox();
+        driverManager.waitUntilItemWillBeShown(gmailMainPage.getComposeButton());
+    }
+
+    public void logoutRemoveAccount() {
+        gmailMainPage.logout();
+        selectAccountPage.removeAccount();
+        driverManager.waitUntilItemWillBeShown(loginPage.getUsernameField());
     }
 }

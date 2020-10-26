@@ -58,4 +58,8 @@ public class LoginPage extends WebAbstractPage {
     public WebElement getStackOverflowContent() {
         return stackOverflowContent;
     }
+
+    public WebElement getUsernameField() {
+        return usernameField;
+    }
 }

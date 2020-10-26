@@ -24,4 +24,8 @@ public class SelectAccountPage extends WebAbstractPage {
         accountNameButton.click();
         confirmDeleteButton.click();
     }
+
+    public boolean removeAccountIsDisplayed() {
+        return removeAccountButton.isDisplayed();
+    }
 }

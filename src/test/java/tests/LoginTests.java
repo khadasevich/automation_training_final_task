@@ -27,18 +27,19 @@ public class LoginTests extends BaseTest {
     @Description("Test goes through list of accounts and logs into gmail")
     public void loginTest(String username, String password) {
         goThroughLogin(username, password);
-        loginPage.goToInbox();
         String actualResult = gmailMainPage.getLoggedUserText();
-        gmailMainPage.logout();
-        selectAccountPage.removeAccount();
+        logoutRemoveAccount();
         Assert.assertTrue(actualResult.contains(username));
     }
 
-    public void goThroughLogin(String username, String password) {
-        loginPage.openLoginPage();
-        loginPage.submitUsername(username);
-        loginPage.submitPassword(password);
-        driverManager.waitUntilItemWillBeShown(loginPage.getStackOverflowContent());
+    @Test(dataProvider = "credentials", priority = 1, description = "GM-2 Logout from gmail")
+    @Description("Test goes through list of accounts and logs into gmail, logs out and check that user logged out")
+    public void logoutTest(String username, String password) {
+        goThroughLogin(username, password);
+        gmailMainPage.logout();
+        boolean actualResult = selectAccountPage.removeAccountIsDisplayed();
+        selectAccountPage.removeAccount();
+        Assert.assertTrue(actualResult);
     }
 
     @DataProvider(name = "credentials")

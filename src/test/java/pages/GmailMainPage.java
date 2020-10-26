@@ -16,6 +16,33 @@ public class GmailMainPage extends WebAbstractPage {
     @FindBy (xpath = "//a[@id='gb_71']")
     private WebElement logOutButton;
 
+    @FindBy (xpath = "//*[@id=':6c']/div/div")
+    private WebElement composeButton;
+
+    @FindBy (xpath = "//textarea[@name='to']")
+    private WebElement toInputField;
+
+    @FindBy (xpath = "//input[@name='subjectbox']")
+    private WebElement subjectInputField;
+
+    @FindBy (xpath = "//div[@aria-label='Message Body']")
+    private WebElement bodyInputField;
+
+    @FindBy (xpath = "//*[@id=':a5']")
+    private WebElement sendButton;
+
+    @FindBy (xpath = "//a[@aria-label='Trash']")
+    private WebElement trashButton;
+
+    @FindBy (xpath = "//a[@aria-label='Sent']")
+    private WebElement sentButton;
+
+    @FindBy (xpath = "//tr[@role='row'][1]")
+    private WebElement firstElementInbox;
+
+    @FindBy (xpath = "//div[@data-message-id]")
+    private WebElement emailText;
+
     public GmailMainPage(WebDriver driver) {
         super(driver);
     }
@@ -32,5 +59,22 @@ public class GmailMainPage extends WebAbstractPage {
     public void logout() {
         userIcon.click();
         logOutButton.click();
+    }
+
+    @Step("Send Email")
+    public void sendEmail(String email, String fakeMessage) {
+        composeButton.click();
+        toInputField.sendKeys(email);
+        subjectInputField.sendKeys("Chuck Test Message");
+        bodyInputField.sendKeys(fakeMessage);
+    }
+
+    @Step("Get result message")
+    public String getEmailMessage() {
+        return emailText.getText();
+    }
+
+    public WebElement getComposeButton() {
+        return composeButton;
     }
 }
