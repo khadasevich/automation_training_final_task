@@ -7,7 +7,6 @@ import listeners.TestListener;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.GmailMainPage;
 import tools.TestTools;
 
 @Listeners(TestListener.class)
@@ -23,10 +22,12 @@ public class EmailSendingTests extends BaseTest {
         String password = "060788avavav";
         String expectedResult = TestTools.fakeMessageGenerator();
         goThroughLogin(usernameOne, password);
-        gmailMainPage.sendEmail(usernameOne + "@gmail.com", expectedResult);
+        gmailMainPage.openComposeEmailWindow();
+        driverManager.waitUntilItemWillBeShown(gmailMainPage.getSendButton());
+        gmailMainPage.sendEmail(usernameTwo + "@gmail.com", expectedResult);
         logoutRemoveAccount();
         goThroughLogin(usernameTwo, password);
         String actualResult = gmailMainPage.getEmailMessage();
-        Assert.assertEquals(expectedResult, actualResult);
+        Assert.assertTrue(actualResult.contains(expectedResult));
     }
 }

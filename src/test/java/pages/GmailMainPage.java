@@ -16,7 +16,7 @@ public class GmailMainPage extends WebAbstractPage {
     @FindBy (xpath = "//a[@id='gb_71']")
     private WebElement logOutButton;
 
-    @FindBy (xpath = "//*[@id=':6c']/div/div")
+    @FindBy (xpath = "//div[contains(text(), 'Compose')]")
     private WebElement composeButton;
 
     @FindBy (xpath = "//textarea[@name='to']")
@@ -28,20 +28,29 @@ public class GmailMainPage extends WebAbstractPage {
     @FindBy (xpath = "//div[@aria-label='Message Body']")
     private WebElement bodyInputField;
 
-    @FindBy (xpath = "//*[@id=':a5']")
+    @FindBy (xpath = "//div[@role='dialog']/descendant::div[contains(text(), 'Send')]")
     private WebElement sendButton;
 
     @FindBy (xpath = "//a[@aria-label='Trash']")
     private WebElement trashButton;
 
     @FindBy (xpath = "//a[@aria-label='Sent']")
-    private WebElement sentButton;
+    private WebElement sentBoxButton;
 
-    @FindBy (xpath = "//tr[@role='row'][1]")
+    @FindBy (xpath = "//div[@role='tabpanel']//tr[@role='row'][1]")
     private WebElement firstElementInbox;
+
+    @FindBy (xpath = "//tr[1]/descendant::div[contains(text(), 'To')]")
+    private WebElement firstElementSent;
+
+    @FindBy (xpath = "//div[@role='tabpanel']//tr[@role='row'][3]")
+    private WebElement firstElementTrash;
 
     @FindBy (xpath = "//div[@data-message-id]")
     private WebElement emailText;
+
+    @FindBy (xpath = "//*[contains(text(),'Message sent')]")
+    private WebElement emailSentToast;
 
     public GmailMainPage(WebDriver driver) {
         super(driver);
@@ -55,26 +64,63 @@ public class GmailMainPage extends WebAbstractPage {
         return accInfo;
     }
 
-    @Step("Log out from account")
-    public void logout() {
+    @Step("Open profile menu")
+    public void openProfileMenu() {
         userIcon.click();
+    }
+
+    @Step("Log out")
+    public void logout() {
         logOutButton.click();
+    }
+
+    @Step("Start Email Sending")
+    public void openComposeEmailWindow() {
+        composeButton.click();
     }
 
     @Step("Send Email")
     public void sendEmail(String email, String fakeMessage) {
-        composeButton.click();
         toInputField.sendKeys(email);
         subjectInputField.sendKeys("Chuck Test Message");
         bodyInputField.sendKeys(fakeMessage);
+        sendButton.click();
     }
 
     @Step("Get result message")
     public String getEmailMessage() {
+        firstElementInbox.click();
         return emailText.getText();
     }
 
     public WebElement getComposeButton() {
         return composeButton;
+    }
+
+    @Step("Go to the sent message")
+    public void goToSentMessage() {
+        sentBoxButton.click();
+        firstElementSent.click();
+    }
+
+    @Step("Get message of the sent message")
+    public String getSentMessage() {
+        return emailText.getText();
+    }
+
+    public WebElement getEmailText() {
+        return emailText;
+    }
+
+    public WebElement getSendButton() {
+        return sendButton;
+    }
+
+    public WebElement getEmailSentToast() {
+        return emailSentToast;
+    }
+
+    public WebElement getLogOutButton() {
+        return logOutButton;
     }
 }

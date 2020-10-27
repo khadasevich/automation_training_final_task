@@ -36,7 +36,7 @@ public class LoginTests extends BaseTest {
     @Description("Test goes through list of accounts and logs into gmail, logs out and check that user logged out")
     public void logoutTest(String username, String password) {
         goThroughLogin(username, password);
-        gmailMainPage.logout();
+        gmailMainPage.openProfileMenu();
         boolean actualResult = selectAccountPage.removeAccountIsDisplayed();
         selectAccountPage.removeAccount();
         Assert.assertTrue(actualResult);

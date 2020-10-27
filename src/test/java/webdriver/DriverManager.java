@@ -62,7 +62,7 @@ public class DriverManager {
     public void waitUntilItemWillBeShown (WebElement element) {
         fluentWait = new FluentWait<>(driver.get())
                 .withTimeout(Duration.ofSeconds(20))
-                .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class);
+                .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class, UnhandledAlertException.class);
         fluentWait.until(ExpectedConditions.visibilityOf(element));
     }
 

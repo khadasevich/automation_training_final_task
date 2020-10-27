@@ -28,4 +28,8 @@ public class SelectAccountPage extends WebAbstractPage {
     public boolean removeAccountIsDisplayed() {
         return removeAccountButton.isDisplayed();
     }
+
+    public WebElement getRemoveAccountButton() {
+        return removeAccountButton;
+    }
 }

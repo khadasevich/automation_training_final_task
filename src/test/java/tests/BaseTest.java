@@ -43,13 +43,15 @@ public class BaseTest {
         loginPage.openLoginPage();
         loginPage.submitUsername(username);
         loginPage.submitPassword(password);
-        driverManager.waitUntilItemWillBeShown(loginPage.getStackOverflowContent());
-        loginPage.goToInbox();
         driverManager.waitUntilItemWillBeShown(gmailMainPage.getComposeButton());
     }
 
     public void logoutRemoveAccount() {
+        gmailMainPage.openProfileMenu();
+        driverManager.waitUntilItemWillBeShown(gmailMainPage.getLogOutButton());
         gmailMainPage.logout();
+        driver.switchTo().alert().accept();
+        driverManager.waitUntilItemWillBeShown(selectAccountPage.getRemoveAccountButton());
         selectAccountPage.removeAccount();
         driverManager.waitUntilItemWillBeShown(loginPage.getUsernameField());
     }
