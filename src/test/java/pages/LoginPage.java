@@ -7,8 +7,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class LoginPage extends WebAbstractPage {
 
-    private final String baseInboxUrl = "https://mail.google.com/mail/u/0/#inbox";
-    private final String baseInboxUrl1 = "https://gmail.com";
+    private final String baseInboxUrl = "https://gmail.com";
 
 
     @FindBy(xpath = "//*[@id='openid-buttons']/button[contains (., 'Google')]")
@@ -30,9 +29,9 @@ public class LoginPage extends WebAbstractPage {
         super(driver);
     }
 
-    @Step("Go to the Stackoverflow and start log in via Google")
+    @Step("Go to the Gmail base URL")
     public void openLoginPage() {
-        driver.get(baseInboxUrl1);
+        driver.get(baseInboxUrl);
     }
 
     @Step("Submit username {0}")

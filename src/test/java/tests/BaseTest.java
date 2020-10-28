@@ -50,9 +50,16 @@ public class BaseTest {
         gmailMainPage.openProfileMenu();
         driverManager.waitUntilItemWillBeShown(gmailMainPage.getLogOutButton());
         gmailMainPage.logout();
-        driver.switchTo().alert().accept();
         driverManager.waitUntilItemWillBeShown(selectAccountPage.getRemoveAccountButton());
         selectAccountPage.removeAccount();
         driverManager.waitUntilItemWillBeShown(loginPage.getUsernameField());
+    }
+
+    public void sendEmail(String email, String bodyText) {
+        gmailMainPage.openComposeEmailWindow();
+        driverManager.waitUntilItemWillBeShown(gmailMainPage.getSendButton());
+        gmailMainPage.sendEmail(email, bodyText);
+        driverManager.waitUntilItemWillBeShown(gmailMainPage.getEmailSentToast());
+        driverManager.waitUntilItemPresents(gmailMainPage.getUndoButton());
     }
 }

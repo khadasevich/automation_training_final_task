@@ -39,7 +39,7 @@ public class LoginTests extends BaseTest {
         gmailMainPage.openProfileMenu();
         boolean actualResult = selectAccountPage.removeAccountIsDisplayed();
         selectAccountPage.removeAccount();
-        Assert.assertTrue(actualResult);
+        Assert.assertTrue(actualResult, "User wasn't logged out");
     }
 
     @DataProvider(name = "credentials")

@@ -62,8 +62,22 @@ public class DriverManager {
     public void waitUntilItemWillBeShown (WebElement element) {
         fluentWait = new FluentWait<>(driver.get())
                 .withTimeout(Duration.ofSeconds(20))
-                .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class, UnhandledAlertException.class);
+                .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class);
         fluentWait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public void waitUntilItemPresents (WebElement element) {
+        fluentWait = new FluentWait<>(driver.get())
+                .withTimeout(Duration.ofSeconds(20))
+                .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class);
+        fluentWait.until(ExpectedConditions.invisibilityOf(element));
+    }
+
+    public void waitUntilIsClickable (WebElement element) {
+        fluentWait = new FluentWait<>(driver.get())
+                .withTimeout(Duration.ofSeconds(20))
+                .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class);
+        fluentWait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     @Attachment

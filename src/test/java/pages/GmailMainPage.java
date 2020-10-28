@@ -43,14 +43,23 @@ public class GmailMainPage extends WebAbstractPage {
     @FindBy (xpath = "//tr[1]/descendant::div[contains(text(), 'To')]")
     private WebElement firstElementSent;
 
-    @FindBy (xpath = "//div[@role='tabpanel']//tr[@role='row'][3]")
+    @FindBy (xpath = "(//td/img[@alt='Trash'])[1]//parent::td//following-sibling::td[1]")
     private WebElement firstElementTrash;
 
-    @FindBy (xpath = "//div[@data-message-id]")
+    @FindBy (xpath = "//div[@data-message-id]/div[2]/div[3]")
     private WebElement emailText;
 
     @FindBy (xpath = "//*[contains(text(),'Message sent')]")
     private WebElement emailSentToast;
+
+    @FindBy (xpath = "//*[contains(text(),'View message')]")
+    private WebElement viewMessageButton;
+
+    @FindBy (xpath = "//*[contains(text(),'Undo')]")
+    private WebElement undoButton;
+
+    @FindBy (xpath = "//div[@data-tooltip='Report spam']//following-sibling::div")
+    private WebElement deleteButton;
 
     public GmailMainPage(WebDriver driver) {
         super(driver);
@@ -104,11 +113,27 @@ public class GmailMainPage extends WebAbstractPage {
     }
 
     @Step("Get message of the sent message")
-    public String getSentMessage() {
+    public String getTextOfInboxMessage() {
         return emailText.getText();
     }
 
-    public WebElement getEmailText() {
+    @Step("Go to the trash message")
+    public void goToTrashMessage() {
+        trashButton.click();
+        firstElementTrash.click();
+    }
+
+    @Step("Click view message button")
+    public void clickViewMessageButton() {
+        viewMessageButton.click();
+    }
+
+    @Step("Delete message")
+    public void deleteMessage() {
+        deleteButton.click();
+    }
+
+    public WebElement getEmailTextElement() {
         return emailText;
     }
 
@@ -122,5 +147,13 @@ public class GmailMainPage extends WebAbstractPage {
 
     public WebElement getLogOutButton() {
         return logOutButton;
+    }
+
+    public WebElement getUndoButton() {
+        return undoButton;
+    }
+
+    public WebElement getDeleteButton() {
+        return deleteButton;
     }
 }
