@@ -55,10 +55,13 @@ public class GmailMainPage extends WebAbstractPage {
     @FindBy (xpath = "//*[contains(text(),'View message')]")
     private WebElement viewMessageButton;
 
+    @FindBy (xpath = "//*[contains(text(), 'Conversation moved to Trash.')]")
+    private WebElement messageDeletedToast;
+
     @FindBy (xpath = "//*[contains(text(),'Undo')]")
     private WebElement undoButton;
 
-    @FindBy (xpath = "//div[@data-tooltip='Report spam']//following-sibling::div")
+    @FindBy (xpath = "//div[@data-tooltip='Delete']")
     private WebElement deleteButton;
 
     public GmailMainPage(WebDriver driver) {
@@ -121,11 +124,6 @@ public class GmailMainPage extends WebAbstractPage {
     public void goToTrashMessage() {
         trashButton.click();
         firstElementTrash.click();
-    }
-
-    @Step("Click view message button")
-    public void clickViewMessageButton() {
-        viewMessageButton.click();
     }
 
     @Step("Delete message")

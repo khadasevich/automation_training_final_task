@@ -41,23 +41,25 @@ public class BaseTest {
 
     public void goThroughLogin(String username, String password) {
         loginPage.openLoginPage();
+        driverManager.waitUntilItemWillBeShown(loginPage.getUsernameField());
         loginPage.submitUsername(username);
+        driverManager.waitUntilItemWillBeShown(loginPage.getPasswordField());
         loginPage.submitPassword(password);
-        driverManager.waitUntilItemWillBeShown(gmailMainPage.getComposeButton());
+        driverManager.waitUntilIsClickable(gmailMainPage.getComposeButton());
     }
 
     public void logoutRemoveAccount() {
         gmailMainPage.openProfileMenu();
-        driverManager.waitUntilItemWillBeShown(gmailMainPage.getLogOutButton());
+        driverManager.waitUntilIsClickable(gmailMainPage.getLogOutButton());
         gmailMainPage.logout();
-        driverManager.waitUntilItemWillBeShown(selectAccountPage.getRemoveAccountButton());
+        driverManager.waitUntilIsClickable(selectAccountPage.getRemoveAccountButton());
         selectAccountPage.removeAccount();
         driverManager.waitUntilItemWillBeShown(loginPage.getUsernameField());
     }
 
     public void sendEmail(String email, String bodyText) {
         gmailMainPage.openComposeEmailWindow();
-        driverManager.waitUntilItemWillBeShown(gmailMainPage.getSendButton());
+        driverManager.waitUntilIsClickable(gmailMainPage.getSendButton());
         gmailMainPage.sendEmail(email, bodyText);
         driverManager.waitUntilItemWillBeShown(gmailMainPage.getEmailSentToast());
         driverManager.waitUntilItemPresents(gmailMainPage.getUndoButton());

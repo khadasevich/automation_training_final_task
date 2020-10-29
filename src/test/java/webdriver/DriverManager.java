@@ -39,14 +39,13 @@ public class DriverManager {
     }
 
     public void quitDriver() {
-        driver.get().close();
         driver.get().quit();
     }
 
     public void setTimeout() {
-        driver.get().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.get().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        driver.get().manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
+        driver.get().manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+        driver.get().manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
+        driver.get().manage().timeouts().setScriptTimeout(40, TimeUnit.SECONDS);
     }
 
     public void removeTimeout() {
@@ -61,23 +60,32 @@ public class DriverManager {
 
     public void waitUntilItemWillBeShown (WebElement element) {
         fluentWait = new FluentWait<>(driver.get())
-                .withTimeout(Duration.ofSeconds(20))
+                .withTimeout(Duration.ofSeconds(30))
                 .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class);
         fluentWait.until(ExpectedConditions.visibilityOf(element));
     }
 
     public void waitUntilItemPresents (WebElement element) {
         fluentWait = new FluentWait<>(driver.get())
-                .withTimeout(Duration.ofSeconds(20))
+                .withTimeout(Duration.ofSeconds(30))
                 .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class);
         fluentWait.until(ExpectedConditions.invisibilityOf(element));
     }
 
     public void waitUntilIsClickable (WebElement element) {
         fluentWait = new FluentWait<>(driver.get())
-                .withTimeout(Duration.ofSeconds(20))
+                .withTimeout(Duration.ofSeconds(30))
                 .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class);
         fluentWait.until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+    public void hoverElement(WebElement element) {
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver.get();
+        String strJavaScript = "var element = arguments[0];"
+                + "var mouseEventObj = document.createEvent('MouseEvents');"
+                + "mouseEventObj.initEvent( 'mouseover', true, true );"
+                + "element.dispatchEvent(mouseEventObj);";
+        javascriptExecutor.executeScript(strJavaScript, element);
     }
 
     @Attachment

@@ -7,8 +7,8 @@ import org.openqa.selenium.support.FindBy;
 
 public class LoginPage extends WebAbstractPage {
 
-    private final String baseInboxUrl = "https://gmail.com";
-
+    private final String baseGmailUrl = "https://gmail.com";
+    private final String inboxUrl = "https://mail.google.com/mail/u/0/#inbox";
 
     @FindBy(xpath = "//*[@id='openid-buttons']/button[contains (., 'Google')]")
     private WebElement loginWithGoogle;
@@ -31,7 +31,7 @@ public class LoginPage extends WebAbstractPage {
 
     @Step("Go to the Gmail base URL")
     public void openLoginPage() {
-        driver.get(baseInboxUrl);
+        driver.get(baseGmailUrl);
     }
 
     @Step("Submit username {0}")
@@ -46,7 +46,16 @@ public class LoginPage extends WebAbstractPage {
         passwordNextButton.click();
     }
 
+    @Step("Go to the inbox")
+    public void goToTheInbox() {
+        driver.get(inboxUrl);
+    }
+
     public WebElement getUsernameField() {
         return usernameField;
+    }
+
+    public WebElement getPasswordField() {
+        return passwordField;
     }
 }

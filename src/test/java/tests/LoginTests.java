@@ -34,12 +34,11 @@ public class LoginTests extends BaseTest {
 
     @Test(dataProvider = "credentials", priority = 1, description = "GM-2 Logout from gmail")
     @Description("Test goes through list of accounts and logs into gmail, logs out and check that user logged out")
-    public void logoutTest(String username, String password) {
+    public void logoutTest(String username, String password) throws InterruptedException {
         goThroughLogin(username, password);
-        gmailMainPage.openProfileMenu();
-        boolean actualResult = selectAccountPage.removeAccountIsDisplayed();
-        selectAccountPage.removeAccount();
-        Assert.assertTrue(actualResult, "User wasn't logged out");
+        logoutRemoveAccount();
+        loginPage.goToTheInbox();
+        Assert.assertTrue(selectAccountPage.signInViewIsDisplayed(), "User wasn't logged out");
     }
 
     @DataProvider(name = "credentials")

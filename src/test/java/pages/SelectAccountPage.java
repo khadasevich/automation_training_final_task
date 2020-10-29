@@ -15,6 +15,9 @@ public class SelectAccountPage extends WebAbstractPage {
     @FindBy (xpath = "//*[@id='yDmH0d']//descendant::span[contains(text(), 'Удалить')][4]")
     private WebElement confirmDeleteButton;
 
+    @FindBy (xpath = "//div[@id='initialView']")
+    private WebElement signInView;
+
     public SelectAccountPage(WebDriver driver) {
         super(driver);
     }
@@ -27,6 +30,10 @@ public class SelectAccountPage extends WebAbstractPage {
 
     public boolean removeAccountIsDisplayed() {
         return removeAccountButton.isDisplayed();
+    }
+
+    public boolean signInViewIsDisplayed() {
+        return signInView.isDisplayed();
     }
 
     public WebElement getRemoveAccountButton() {

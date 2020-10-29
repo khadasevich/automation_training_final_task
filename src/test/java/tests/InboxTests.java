@@ -38,7 +38,7 @@ public class InboxTests extends BaseTest {
         goThroughLogin(usernameOne, password);
         sendEmail("usernametwo@yopmail.com", expectedResult);
         gmailMainPage.goToSentMessage();
-        driverManager.waitUntilIsClickable(gmailMainPage.getDeleteButton());
+        driverManager.hoverElement(gmailMainPage.getDeleteButton());
         gmailMainPage.deleteMessage();
         gmailMainPage.goToTrashMessage();
         driverManager.waitUntilItemWillBeShown(gmailMainPage.getEmailTextElement());
