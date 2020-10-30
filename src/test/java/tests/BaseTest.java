@@ -1,10 +1,7 @@
 package tests;
 
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
+import org.testng.annotations.*;
 import pages.GmailMainPage;
 import pages.LoginPage;
 import pages.SelectAccountPage;
@@ -49,8 +46,10 @@ public class BaseTest {
     }
 
     public void logoutRemoveAccount() {
+        driverManager.waitUntilIsClickable(gmailMainPage.getUserIcon());
         gmailMainPage.openProfileMenu();
         driverManager.waitUntilIsClickable(gmailMainPage.getLogOutButton());
+        driverManager.waitWhileAlertPresent();
         gmailMainPage.logout();
         driverManager.waitUntilIsClickable(selectAccountPage.getRemoveAccountButton());
         selectAccountPage.removeAccount();

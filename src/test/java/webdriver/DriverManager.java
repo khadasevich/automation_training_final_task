@@ -5,6 +5,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
@@ -40,6 +42,7 @@ public class DriverManager {
 
     public void quitDriver() {
         driver.get().quit();
+        driver.set(null);
     }
 
     public void setTimeout() {
@@ -86,6 +89,14 @@ public class DriverManager {
                 + "mouseEventObj.initEvent( 'mouseover', true, true );"
                 + "element.dispatchEvent(mouseEventObj);";
         javascriptExecutor.executeScript(strJavaScript, element);
+    }
+
+    public void waitWhileAlertPresent(){
+        WebDriverWait wait = new WebDriverWait(driver.get(), 2);
+        try {
+            wait.until(ExpectedConditions.alertIsPresent());
+        } catch (TimeoutException ignored) {
+        }
     }
 
     @Attachment

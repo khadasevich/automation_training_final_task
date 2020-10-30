@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Gmail Firefox tests" verbose="1">
+
+    <parameter name="environment" value="local"/>
+
+    <test name="Firefox gmail tests">
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="tests.EmailSendingTests" />
+            <class name="tests.InboxTests" />
+            <class name="tests.LoginTests" />
+        </classes>
+    </test>
+</suite>

@@ -28,8 +28,8 @@ public class LoginTests extends BaseTest {
     public void loginTest(String username, String password) {
         goThroughLogin(username, password);
         String actualResult = gmailMainPage.getLoggedUserText();
-        logoutRemoveAccount();
         Assert.assertTrue(actualResult.contains(username));
+        logoutRemoveAccount();
     }
 
     @Test(dataProvider = "credentials", priority = 1, description = "GM-2 Logout from gmail")

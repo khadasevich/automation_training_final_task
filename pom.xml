@@ -84,7 +84,8 @@
                 <version>2.20</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src\test\resources\TestSuits\LocalTests</suiteXmlFile>
+                        <suiteXmlFile>src\test\resources\TestSuits\ChromeLocalTests.xml</suiteXmlFile>
+                        <suiteXmlFile>src\test\resources\TestSuits\FirefoxLocalTests.xml</suiteXmlFile>
                     </suiteXmlFiles>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"

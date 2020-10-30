@@ -28,5 +28,6 @@ public class EmailSendingTests extends BaseTest {
         goThroughLogin(usernameTwo, password);
         String actualResult = gmailMainPage.getEmailMessage();
         Assert.assertEquals(actualResult, expectedResult);
+        logoutRemoveAccount();
     }
 }

@@ -37,7 +37,7 @@ public class GmailMainPage extends WebAbstractPage {
     @FindBy (xpath = "//a[@aria-label='Sent']")
     private WebElement sentBoxButton;
 
-    @FindBy (xpath = "//div[@role='tabpanel']//tr[@role='row'][1]")
+    @FindBy (xpath = "(//div[@role='tabpanel']//tr[@role='row'])[1]")
     private WebElement firstElementInbox;
 
     @FindBy (xpath = "//tr[1]/descendant::div[contains(text(), 'To')]")
@@ -60,6 +60,9 @@ public class GmailMainPage extends WebAbstractPage {
 
     @FindBy (xpath = "//*[contains(text(),'Undo')]")
     private WebElement undoButton;
+
+    @FindBy (xpath = "//div[@class='iH bzn']//div[@class='G-tF']//div[2][@class='G-Ni G-aE J-J5-Ji']")
+    private WebElement groupElement;
 
     @FindBy (xpath = "//div[@data-tooltip='Delete']")
     private WebElement deleteButton;
@@ -101,7 +104,7 @@ public class GmailMainPage extends WebAbstractPage {
 
     @Step("Get result message")
     public String getEmailMessage() {
-        firstElementInbox.click();
+        action.moveToElement(firstElementInbox).click().build().perform();
         return emailText.getText();
     }
 
@@ -112,7 +115,7 @@ public class GmailMainPage extends WebAbstractPage {
     @Step("Go to the sent message")
     public void goToSentMessage() {
         sentBoxButton.click();
-        firstElementSent.click();
+        action.moveToElement(firstElementSent).click().build().perform();
     }
 
     @Step("Get message of the sent message")
@@ -128,6 +131,7 @@ public class GmailMainPage extends WebAbstractPage {
 
     @Step("Delete message")
     public void deleteMessage() {
+        action.moveToElement(groupElement).build().perform();
         deleteButton.click();
     }
 
@@ -151,7 +155,11 @@ public class GmailMainPage extends WebAbstractPage {
         return undoButton;
     }
 
-    public WebElement getDeleteButton() {
-        return deleteButton;
+    public WebElement getUserIcon() {
+        return userIcon;
+    }
+
+    public WebElement getFirstElementInbox() {
+        return firstElementInbox;
     }
 }
