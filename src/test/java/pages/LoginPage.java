@@ -3,15 +3,15 @@ package pages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage extends WebAbstractPage {
+public class LoginPage {
 
     private final String baseGmailUrl = "https://gmail.com";
     private final String inboxUrl = "https://mail.google.com/mail/u/0/#inbox";
-
-    @FindBy(xpath = "//*[@id='openid-buttons']/button[contains (., 'Google')]")
-    private WebElement loginWithGoogle;
+    protected WebDriver driver;
 
     @FindBy(xpath = "//input[@id='identifierId']")
     private WebElement usernameField;
@@ -26,7 +26,8 @@ public class LoginPage extends WebAbstractPage {
     private WebElement passwordNextButton;
 
     public LoginPage(WebDriver driver) {
-        super(driver);
+        this.driver = driver;
+        PageFactory.initElements(this.driver, this);
     }
 
     @Step("Go to the Gmail base URL")
@@ -47,7 +48,7 @@ public class LoginPage extends WebAbstractPage {
     }
 
     @Step("Go to the inbox")
-    public void goToTheInbox() {
+    public void openInbox() {
         driver.get(inboxUrl);
     }
 

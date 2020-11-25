@@ -1,5 +1,6 @@
 package webdriver;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -28,22 +29,24 @@ public class DriverFactory {
         this.browser = browser.toLowerCase();
     }
 
-    public WebDriver getDriver() {
+    public WebDriver getLocalDriver() {
         switch (browser) {
             case "chrome":
                 System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
+                WebDriverManager.chromedriver();
                 driver = new ChromeDriver(chromeOptions);
                 break;
 
             case "firefox":
                 System.setProperty("webdriver.gecko.driver", "src\\test\\resources\\geckodriver.exe");
+                WebDriverManager.firefoxdriver();
                 driver = new FirefoxDriver(firefoxOptions);
                 break;
         }
         return driver;
     }
 
-    public WebDriver getDriverGrid() {
+    public WebDriver getRemoteGrid() {
         String hubUrl = "http://192.168.0.2:4444/wd/hub";
         DesiredCapabilities capabilities = new DesiredCapabilities();
         switch (browser) {
@@ -64,7 +67,7 @@ public class DriverFactory {
         return driver;
     }
 
-    public WebDriver getSauceDriverGrid() {
+    public WebDriver getSauceDriver() {
         Properties properties = new Properties();
         try {
             properties.load(new FileReader(file));

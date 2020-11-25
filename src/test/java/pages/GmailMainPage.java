@@ -3,9 +3,14 @@ package pages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
-public class GmailMainPage extends WebAbstractPage {
+public class GmailMainPage {
+
+    protected WebDriver driver;
+    Actions action;
 
     @FindBy (css = "a[href*= 'https://accounts.google.com/SignOutOptions']")
     private WebElement userIcon;
@@ -13,14 +18,14 @@ public class GmailMainPage extends WebAbstractPage {
     @FindBy (xpath = "//*[@id='gb']//descendant::div[contains(@aria-label, 'Account Information')]")
     private WebElement accountInfo;
 
-    @FindBy (xpath = "//a[@id='gb_71']")
+    @FindBy (xpath = "//a[contains(., 'Sign out')]")
     private WebElement logOutButton;
 
     @FindBy (xpath = "//div[contains(text(), 'Compose')]")
     private WebElement composeButton;
 
     @FindBy (xpath = "//textarea[@name='to']")
-    private WebElement toInputField;
+    private WebElement receiverInputField;
 
     @FindBy (xpath = "//input[@name='subjectbox']")
     private WebElement subjectInputField;
@@ -32,22 +37,22 @@ public class GmailMainPage extends WebAbstractPage {
     private WebElement sendButton;
 
     @FindBy (xpath = "//a[@aria-label='Trash']")
-    private WebElement trashButton;
+    private WebElement trashInbox;
 
     @FindBy (xpath = "//a[@aria-label='Sent']")
-    private WebElement sentBoxButton;
+    private WebElement sentInbox;
 
     @FindBy (xpath = "(//div[@role='tabpanel']//tr[@role='row'])[1]")
-    private WebElement firstElementInbox;
+    private WebElement firstInboxElement;
 
     @FindBy (xpath = "//tr[1]/descendant::div[contains(text(), 'To')]")
-    private WebElement firstElementSent;
+    private WebElement firstSentElement;
 
     @FindBy (xpath = "(//td/img[@alt='Trash'])[1]//parent::td//following-sibling::td[1]")
-    private WebElement firstElementTrash;
+    private WebElement firstTrashElement;
 
     @FindBy (xpath = "//div[@data-message-id]/div[2]/div[3]")
-    private WebElement emailText;
+    private WebElement receivedEmailTextElement;
 
     @FindBy (xpath = "//*[contains(text(),'Message sent')]")
     private WebElement emailSentToast;
@@ -61,22 +66,24 @@ public class GmailMainPage extends WebAbstractPage {
     @FindBy (xpath = "//*[contains(text(),'Undo')]")
     private WebElement undoButton;
 
-    @FindBy (xpath = "//div[@class='iH bzn']//div[@class='G-tF']//div[2][@class='G-Ni G-aE J-J5-Ji']")
-    private WebElement groupElement;
+    @FindBy (xpath = "(//div[2][@class='G-Ni G-aE J-J5-Ji'])[3]")
+    private WebElement inboxActionBar;
 
     @FindBy (xpath = "//div[@data-tooltip='Delete']")
     private WebElement deleteButton;
 
     public GmailMainPage(WebDriver driver) {
-        super(driver);
+        this.driver = driver;
+        this.action = new Actions(driver);
+        PageFactory.initElements(this.driver, this);
     }
 
     @Step("Return Info Of the Logged in User")
-    public String getLoggedUserText() {
+    public String getAccountInfo() {
         userIcon.click();
-        String accInfo = accountInfo.getText();
+        String accountInfo = this.accountInfo.getText();
         userIcon.click();
-        return accInfo;
+        return accountInfo;
     }
 
     @Step("Open profile menu")
@@ -85,7 +92,7 @@ public class GmailMainPage extends WebAbstractPage {
     }
 
     @Step("Log out")
-    public void logout() {
+    public void gmailLogout() {
         logOutButton.click();
     }
 
@@ -96,7 +103,7 @@ public class GmailMainPage extends WebAbstractPage {
 
     @Step("Send Email")
     public void sendEmail(String email, String fakeMessage) {
-        toInputField.sendKeys(email);
+        receiverInputField.sendKeys(email);
         subjectInputField.sendKeys("Chuck Test Message");
         bodyInputField.sendKeys(fakeMessage);
         sendButton.click();
@@ -104,8 +111,8 @@ public class GmailMainPage extends WebAbstractPage {
 
     @Step("Get result message")
     public String getEmailMessage() {
-        action.moveToElement(firstElementInbox).click().build().perform();
-        return emailText.getText();
+        action.moveToElement(firstInboxElement).click().build().perform();
+        return receivedEmailTextElement.getText();
     }
 
     public WebElement getComposeButton() {
@@ -113,30 +120,30 @@ public class GmailMainPage extends WebAbstractPage {
     }
 
     @Step("Go to the sent message")
-    public void goToSentMessage() {
-        sentBoxButton.click();
-        action.moveToElement(firstElementSent).click().build().perform();
+    public void openFirstSentMessage() {
+        sentInbox.click();
+        action.moveToElement(firstSentElement).click().build().perform();
     }
 
     @Step("Get message of the sent message")
-    public String getTextOfInboxMessage() {
-        return emailText.getText();
+    public String getReceivedEmailTextElement() {
+        return receivedEmailTextElement.getText();
     }
 
     @Step("Go to the trash message")
-    public void goToTrashMessage() {
-        trashButton.click();
-        firstElementTrash.click();
+    public void openFirstTrashMessage() {
+        trashInbox.click();
+        firstTrashElement.click();
     }
 
     @Step("Delete message")
     public void deleteMessage() {
-        action.moveToElement(groupElement).build().perform();
+        action.moveToElement(inboxActionBar).build().perform();
         deleteButton.click();
     }
 
     public WebElement getEmailTextElement() {
-        return emailText;
+        return receivedEmailTextElement;
     }
 
     public WebElement getSendButton() {
@@ -159,7 +166,4 @@ public class GmailMainPage extends WebAbstractPage {
         return userIcon;
     }
 
-    public WebElement getFirstElementInbox() {
-        return firstElementInbox;
-    }
 }

@@ -1,5 +1,6 @@
 package webdriver;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Attachment;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -12,87 +13,75 @@ import java.util.concurrent.TimeUnit;
 
 public class DriverManager {
 
-    private final String environment;
-    private final String browser;
     private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
     private static FluentWait<WebDriver> fluentWait;
+    private static WebDriverWait wait;
 
-    public DriverManager(String environment, String browser) {
-        this.environment = environment;
-        this.browser = browser;
-    }
-
-    public WebDriver getWebDriver() {
+    public static void initWebDriver(String environment, String browser) {
         DriverFactory newDriver = new DriverFactory(browser);
         if (null == driver.get()) {
             try {
                 if (environment.equalsIgnoreCase("local")) {
-                    driver.set(newDriver.getDriver());
+                    driver.set(newDriver.getLocalDriver());
                 } else if (environment.equalsIgnoreCase("grid")) {
-                    driver.set(newDriver.getDriverGrid());
+                    driver.set(newDriver.getRemoteGrid());
                 } else if (environment.equalsIgnoreCase("sauce")) {
-                    driver.set(newDriver.getSauceDriverGrid());
+                    driver.set(newDriver.getSauceDriver());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static WebDriver getWebDriver() {
         return driver.get();
     }
 
-    public void quitDriver() {
+    public static void quitDriver() {
         driver.get().quit();
         driver.set(null);
     }
 
-    public void setTimeout() {
+    public static void setTimeout() {
         driver.get().manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
         driver.get().manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
         driver.get().manage().timeouts().setScriptTimeout(40, TimeUnit.SECONDS);
     }
 
-    public void removeTimeout() {
+    public static void removeTimeout() {
         driver.get().manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         driver.get().manage().timeouts().pageLoadTimeout(0, TimeUnit.SECONDS);
         driver.get().manage().timeouts().setScriptTimeout(0, TimeUnit.SECONDS);
     }
 
-    public void maximizeWindow() {
+    public static void maximizeWindow() {
         driver.get().manage().window().maximize();
     }
 
-    public void waitUntilItemWillBeShown (WebElement element) {
+    public static void waitUntilItemWillBeShown(WebElement element) {
         fluentWait = new FluentWait<>(driver.get())
                 .withTimeout(Duration.ofSeconds(30))
                 .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class);
         fluentWait.until(ExpectedConditions.visibilityOf(element));
     }
 
-    public void waitUntilItemPresents (WebElement element) {
+    public static void waitUntilItemPresents(WebElement element) {
         fluentWait = new FluentWait<>(driver.get())
                 .withTimeout(Duration.ofSeconds(30))
                 .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class);
         fluentWait.until(ExpectedConditions.invisibilityOf(element));
     }
 
-    public void waitUntilIsClickable (WebElement element) {
+    public static void waitUntilItemIsClickable(WebElement element) {
         fluentWait = new FluentWait<>(driver.get())
                 .withTimeout(Duration.ofSeconds(30))
                 .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class);
         fluentWait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    public void hoverElement(WebElement element) {
-        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver.get();
-        String strJavaScript = "var element = arguments[0];"
-                + "var mouseEventObj = document.createEvent('MouseEvents');"
-                + "mouseEventObj.initEvent( 'mouseover', true, true );"
-                + "element.dispatchEvent(mouseEventObj);";
-        javascriptExecutor.executeScript(strJavaScript, element);
-    }
-
-    public void waitWhileAlertPresent(){
-        WebDriverWait wait = new WebDriverWait(driver.get(), 2);
+    public static void waitWhileAlertPresent() {
+        wait = new WebDriverWait(driver.get(), 2);
         try {
             wait.until(ExpectedConditions.alertIsPresent());
         } catch (TimeoutException ignored) {
@@ -100,16 +89,16 @@ public class DriverManager {
     }
 
     @Attachment
-    public byte[] takeScreenshot() {
+    public static byte[] takeScreenshot() {
         TakesScreenshot screenshot = ((TakesScreenshot) driver.get());
         return screenshot.getScreenshotAs(OutputType.BYTES);
     }
 
     @Attachment
-    public String browserVersion() {
+    public static String getBrowserVersion() {
         Capabilities caps = ((RemoteWebDriver) driver.get()).getCapabilities();
         String browserName = caps.getBrowserName();
         String browserVersion = caps.getVersion();
-        return browserName+" "+browserVersion;
+        return browserName + " " + browserVersion;
     }
 }

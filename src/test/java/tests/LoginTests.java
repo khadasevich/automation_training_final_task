@@ -20,25 +20,25 @@ import java.util.Map;
 @Listeners(TestListener.class)
 @Epic("Final Task")
 @Feature("Log in / Log out")
-public class LoginTests extends BaseTest {
+public class LoginTests extends BasicActionsForTest {
 
 
     @Test(dataProvider = "credentials", priority = 1, description = "GM-1 Login to gmail with valid credentials")
     @Description("Test goes through list of accounts and logs into gmail")
     public void loginTest(String username, String password) {
         goThroughLogin(username, password);
-        String actualResult = gmailMainPage.getLoggedUserText();
+        String actualResult = gmailMainPage.getAccountInfo();
         Assert.assertTrue(actualResult.contains(username));
-        logoutRemoveAccount();
+        removeAccountAfterLogout();
     }
 
     @Test(dataProvider = "credentials", priority = 1, description = "GM-2 Logout from gmail")
     @Description("Test goes through list of accounts and logs into gmail, logs out and check that user logged out")
-    public void logoutTest(String username, String password) throws InterruptedException {
+    public void logoutTest(String username, String password) {
         goThroughLogin(username, password);
-        logoutRemoveAccount();
-        loginPage.goToTheInbox();
-        Assert.assertTrue(selectAccountPage.signInViewIsDisplayed(), "User wasn't logged out");
+        removeAccountAfterLogout();
+        loginPage.openInbox();
+        Assert.assertTrue(selectAccountPage.checkInitialViewShown(), "User wasn't logged out");
     }
 
     @DataProvider(name = "credentials")

@@ -3,11 +3,12 @@ package listeners;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-import tests.BaseTest;
-import tools.TestTools;
+import tests.BasicActionsForTest;
+import tools.DateTime;
+import tools.OsName;
 import webdriver.DriverManager;
 
-public class TestListener extends BaseTest implements ITestListener {
+public class TestListener extends BasicActionsForTest implements ITestListener {
     @Override
     public void onTestStart(ITestResult iTestResult) {
 
@@ -20,12 +21,10 @@ public class TestListener extends BaseTest implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult iTestResult) {
-        Object testClass = iTestResult.getInstance();
-        DriverManager driverManager = ((BaseTest) testClass).getDriver();
-        TestTools.getCurrentDateTime();
-        TestTools.getOSName();
-        driverManager.browserVersion();
-        driverManager.takeScreenshot();
+        DateTime.getCurrentDateTime();
+        OsName.getOSName();
+        DriverManager.getBrowserVersion();
+        DriverManager.takeScreenshot();
     }
 
     @Override
