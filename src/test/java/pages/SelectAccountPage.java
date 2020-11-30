@@ -10,16 +10,16 @@ public class SelectAccountPage {
 
     protected WebDriver driver;
 
-    @FindBy (xpath = "//*[@id='view_container']/descendant::li[3]")
+    @FindBy (css = "div > ul > li:nth-child(3)")
     @Getter private WebElement removeAccount;
 
-    @FindBy (xpath = "//*[@id='view_container']/descendant::li[1]")
+    @FindBy (css = "div > ul > li:nth-child(1)")
     private WebElement accountName;
 
-    @FindBy (xpath = "//*[@id='yDmH0d']//descendant::span[contains(text(), 'Удалить')][4]")
+    @FindBy (xpath = "(//span[contains(., 'seleniumtests10@gmail.com')]//following-sibling::div//div[@role='button'])[1]")
     private WebElement confirmDelete;
 
-    @FindBy (xpath = "//div[@id='initialView']")
+    @FindBy (id = "initialView")
     private WebElement initialView;
 
     public SelectAccountPage(WebDriver driver) {

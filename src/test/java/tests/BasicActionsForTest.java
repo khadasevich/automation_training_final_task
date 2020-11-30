@@ -16,7 +16,7 @@ public class BasicActionsForTest {
 
     @BeforeClass
     @Parameters({"browser", "environment"})
-    protected void setUp(@Optional("firefox") String browser, @Optional("local") String environment) {
+    protected void setUp(@Optional("chrome") String browser, @Optional("local") String environment) {
         DriverManager.initWebDriver(environment, browser);
         driver = DriverManager.getWebDriver();
         loginPage = new LoginPage(driver);
@@ -53,7 +53,7 @@ public class BasicActionsForTest {
 
     public void sendEmail(String email, String bodyText) {
         gmailMainPage.openComposeEmailWindow();
-        DriverManager.waitUntilItemIsClickable(gmailMainPage.getUndoButton());
+        DriverManager.waitUntilItemIsClickable(gmailMainPage.getSendButton());
         gmailMainPage.sendEmail(email, bodyText);
         DriverManager.waitUntilItemWillBeShown(gmailMainPage.getEmailSentToast());
         DriverManager.waitUntilItemPresents(gmailMainPage.getUndoButton());
