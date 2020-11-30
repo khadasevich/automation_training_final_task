@@ -25,8 +25,8 @@ public class InboxTests extends BasicActionsForTest {
         goThroughLogin(usernameOne, password);
         sendEmail("usernametwo@yopmail.com", expectedResult);
         gmailMainPage.openFirstSentMessage();
-        DriverManager.waitUntilItemWillBeShown(gmailMainPage.getEmailTextElement());
-        String actualResult = gmailMainPage.getReceivedEmailTextElement();
+        DriverManager.waitUntilItemWillBeShown(gmailMainPage.getReceivedEmailTextElement());
+        String actualResult = gmailMainPage.getReceivedEmailText();
         Assert.assertEquals(actualResult, expectedResult);
         removeAccountAfterLogout();
     }
@@ -40,8 +40,8 @@ public class InboxTests extends BasicActionsForTest {
         gmailMainPage.openFirstSentMessage();
         gmailMainPage.deleteMessage();
         gmailMainPage.openFirstTrashMessage();
-        DriverManager.waitUntilItemWillBeShown(gmailMainPage.getEmailTextElement());
-        String actualResult = gmailMainPage.getReceivedEmailTextElement();
+        DriverManager.waitUntilItemWillBeShown(gmailMainPage.getReceivedEmailTextElement());
+        String actualResult = gmailMainPage.getReceivedEmailText();
         Assert.assertEquals(actualResult, expectedResult);
         removeAccountAfterLogout();
     }

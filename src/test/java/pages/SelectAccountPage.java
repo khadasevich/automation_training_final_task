@@ -1,5 +1,6 @@
 package pages;
 
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,7 +11,7 @@ public class SelectAccountPage {
     protected WebDriver driver;
 
     @FindBy (xpath = "//*[@id='view_container']/descendant::li[3]")
-    private WebElement removeAccount;
+    @Getter private WebElement removeAccount;
 
     @FindBy (xpath = "//*[@id='view_container']/descendant::li[1]")
     private WebElement accountName;
@@ -34,9 +35,5 @@ public class SelectAccountPage {
 
     public boolean checkInitialViewShown() {
         return initialView.isDisplayed();
-    }
-
-    public WebElement getRemoveAccount() {
-        return removeAccount;
     }
 }

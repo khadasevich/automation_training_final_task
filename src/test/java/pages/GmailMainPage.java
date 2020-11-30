@@ -1,6 +1,7 @@
 package pages;
 
 import io.qameta.allure.Step;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -13,13 +14,13 @@ public class GmailMainPage {
     Actions action;
 
     @FindBy (css = "a[href*= 'https://accounts.google.com/SignOutOptions']")
-    private WebElement userIcon;
+    @Getter private WebElement userIcon;
 
     @FindBy (xpath = "//*[@id='gb']//descendant::div[contains(@aria-label, 'Account Information')]")
     private WebElement accountInfo;
 
     @FindBy (xpath = "//a[contains(., 'Sign out')]")
-    private WebElement logOutButton;
+    @Getter private WebElement logOutButton;
 
     @FindBy (xpath = "//div[contains(text(), 'Compose')]")
     private WebElement composeButton;
@@ -34,7 +35,7 @@ public class GmailMainPage {
     private WebElement bodyInputField;
 
     @FindBy (xpath = "//div[@role='dialog']/descendant::div[contains(text(), 'Send')]")
-    private WebElement sendButton;
+    @Getter private WebElement sendButton;
 
     @FindBy (xpath = "//a[@aria-label='Trash']")
     private WebElement trashInbox;
@@ -52,10 +53,10 @@ public class GmailMainPage {
     private WebElement firstTrashElement;
 
     @FindBy (xpath = "//div[@data-message-id]/div[2]/div[3]")
-    private WebElement receivedEmailTextElement;
+    @Getter private WebElement receivedEmailTextElement;
 
     @FindBy (xpath = "//*[contains(text(),'Message sent')]")
-    private WebElement emailSentToast;
+    @Getter private WebElement emailSentToast;
 
     @FindBy (xpath = "//*[contains(text(),'View message')]")
     private WebElement viewMessageButton;
@@ -64,7 +65,7 @@ public class GmailMainPage {
     private WebElement messageDeletedToast;
 
     @FindBy (xpath = "//*[contains(text(),'Undo')]")
-    private WebElement undoButton;
+    @Getter private WebElement undoButton;
 
     @FindBy (xpath = "(//div[2][@class='G-Ni G-aE J-J5-Ji'])[3]")
     private WebElement inboxActionBar;
@@ -126,7 +127,7 @@ public class GmailMainPage {
     }
 
     @Step("Get message of the sent message")
-    public String getReceivedEmailTextElement() {
+    public String getReceivedEmailText() {
         return receivedEmailTextElement.getText();
     }
 
@@ -141,29 +142,4 @@ public class GmailMainPage {
         action.moveToElement(inboxActionBar).build().perform();
         deleteButton.click();
     }
-
-    public WebElement getEmailTextElement() {
-        return receivedEmailTextElement;
-    }
-
-    public WebElement getSendButton() {
-        return sendButton;
-    }
-
-    public WebElement getEmailSentToast() {
-        return emailSentToast;
-    }
-
-    public WebElement getLogOutButton() {
-        return logOutButton;
-    }
-
-    public WebElement getUndoButton() {
-        return undoButton;
-    }
-
-    public WebElement getUserIcon() {
-        return userIcon;
-    }
-
 }

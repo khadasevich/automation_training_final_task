@@ -53,7 +53,7 @@ public class BasicActionsForTest {
 
     public void sendEmail(String email, String bodyText) {
         gmailMainPage.openComposeEmailWindow();
-        DriverManager.waitUntilItemIsClickable(gmailMainPage.getSendButton());
+        DriverManager.waitUntilItemIsClickable(gmailMainPage.getUndoButton());
         gmailMainPage.sendEmail(email, bodyText);
         DriverManager.waitUntilItemWillBeShown(gmailMainPage.getEmailSentToast());
         DriverManager.waitUntilItemPresents(gmailMainPage.getUndoButton());

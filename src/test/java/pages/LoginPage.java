@@ -1,9 +1,9 @@
 package pages;
 
 import io.qameta.allure.Step;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
@@ -14,10 +14,10 @@ public class LoginPage {
     protected WebDriver driver;
 
     @FindBy(xpath = "//input[@id='identifierId']")
-    private WebElement usernameField;
+    @Getter private WebElement usernameField;
 
     @FindBy(xpath = "//div[@id='password']//descendant::input")
-    private WebElement passwordField;
+    @Getter private WebElement passwordField;
 
     @FindBy(xpath = "//*[@id='identifierNext']/div/button")
     private WebElement usernameNextButton;
@@ -50,13 +50,5 @@ public class LoginPage {
     @Step("Go to the inbox")
     public void openInbox() {
         driver.get(inboxUrl);
-    }
-
-    public WebElement getUsernameField() {
-        return usernameField;
-    }
-
-    public WebElement getPasswordField() {
-        return passwordField;
     }
 }
