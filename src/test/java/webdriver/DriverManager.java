@@ -1,21 +1,14 @@
 package webdriver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Attachment;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class DriverManager {
 
     private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
-    private static FluentWait<WebDriver> fluentWait;
-    private static WebDriverWait wait;
 
     public static void initWebDriver(String environment, String browser) {
         DriverFactory newDriver = new DriverFactory(browser);
@@ -57,35 +50,6 @@ public class DriverManager {
 
     public static void maximizeWindow() {
         driver.get().manage().window().maximize();
-    }
-
-    public static void waitUntilItemWillBeShown(WebElement element) {
-        fluentWait = new FluentWait<>(driver.get())
-                .withTimeout(Duration.ofSeconds(30))
-                .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class);
-        fluentWait.until(ExpectedConditions.visibilityOf(element));
-    }
-
-    public static void waitUntilItemPresents(WebElement element) {
-        fluentWait = new FluentWait<>(driver.get())
-                .withTimeout(Duration.ofSeconds(30))
-                .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class);
-        fluentWait.until(ExpectedConditions.invisibilityOf(element));
-    }
-
-    public static void waitUntilItemIsClickable(WebElement element) {
-        fluentWait = new FluentWait<>(driver.get())
-                .withTimeout(Duration.ofSeconds(30))
-                .pollingEvery(Duration.ofMillis(500)).ignoring(TimeoutException.class);
-        fluentWait.until(ExpectedConditions.elementToBeClickable(element));
-    }
-
-    public static void waitWhileAlertPresent() {
-        wait = new WebDriverWait(driver.get(), 2);
-        try {
-            wait.until(ExpectedConditions.alertIsPresent());
-        } catch (TimeoutException ignored) {
-        }
     }
 
     @Attachment

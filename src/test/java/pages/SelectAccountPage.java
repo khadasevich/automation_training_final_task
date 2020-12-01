@@ -6,9 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class SelectAccountPage {
-
-    protected WebDriver driver;
+public class SelectAccountPage extends WebAbstractPage{
 
     @FindBy (css = "div > ul > li:nth-child(3)")
     @Getter private WebElement removeAccount;
@@ -23,8 +21,7 @@ public class SelectAccountPage {
     private WebElement initialView;
 
     public SelectAccountPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(this.driver, this);
+        super(driver);
     }
 
     public void removeAccount() {

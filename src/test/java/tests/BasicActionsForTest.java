@@ -1,11 +1,20 @@
 package tests;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import org.openqa.selenium.WebDriver;
+import org.testng.ITestContext;
 import org.testng.annotations.*;
 import pages.GmailMainPage;
 import pages.LoginPage;
 import pages.SelectAccountPage;
 import webdriver.DriverManager;
+import webdriver.Waiters;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.List;
+import java.util.Map;
 
 public class BasicActionsForTest {
 
@@ -13,6 +22,8 @@ public class BasicActionsForTest {
     LoginPage loginPage;
     GmailMainPage gmailMainPage;
     SelectAccountPage selectAccountPage;
+    String filename = "src\\test\\resources\\test_data";
+    Gson gson = new Gson();
 
     @BeforeClass
     @Parameters({"browser", "environment"})
@@ -31,31 +42,32 @@ public class BasicActionsForTest {
         DriverManager.quitDriver();
     }
 
+    @DataProvider(name = "credentials")
+    public Object[][] getJSON(ITestContext context) throws FileNotFoundException {
+        List<Map> users = gson.fromJson(new JsonReader(new FileReader(filename)), List.class);
+        Object[][] objects = users.stream()
+                .map(testData ->
+                        testData.values().toArray()).toArray(Object[][]::new);
+        return objects;
+    }
+
     public void goThroughLogin(String username, String password) {
         loginPage.openLoginPage();
-        DriverManager.waitUntilItemWillBeShown(loginPage.getUsernameField());
+        Waiters.waitUntilItemWillBeShown(loginPage.getUsernameField(), driver);
         loginPage.submitUsername(username);
-        DriverManager.waitUntilItemWillBeShown(loginPage.getPasswordField());
+        Waiters.waitUntilItemWillBeShown(loginPage.getPasswordField(), driver);
         loginPage.submitPassword(password);
-        DriverManager.waitUntilItemIsClickable(gmailMainPage.getComposeButton());
+        Waiters.waitUntilItemIsClickable(gmailMainPage.getComposeButton(), driver);
     }
 
     public void removeAccountAfterLogout() {
-        DriverManager.waitUntilItemIsClickable(gmailMainPage.getUserIcon());
+        Waiters.waitUntilItemIsClickable(gmailMainPage.getUserIcon(), driver);
         gmailMainPage.openProfileMenu();
-        DriverManager.waitUntilItemIsClickable(gmailMainPage.getLogOutButton());
-        DriverManager.waitWhileAlertPresent();
+        Waiters.waitUntilItemIsClickable(gmailMainPage.getLogOutButton(), driver);
+        Waiters.waitWhileAlertPresent(driver);
         gmailMainPage.gmailLogout();
-        DriverManager.waitUntilItemIsClickable(selectAccountPage.getRemoveAccount());
+        Waiters.waitUntilItemIsClickable(selectAccountPage.getRemoveAccount(), driver);
         selectAccountPage.removeAccount();
-        DriverManager.waitUntilItemWillBeShown(loginPage.getUsernameField());
-    }
-
-    public void sendEmail(String email, String bodyText) {
-        gmailMainPage.openComposeEmailWindow();
-        DriverManager.waitUntilItemIsClickable(gmailMainPage.getSendButton());
-        gmailMainPage.sendEmail(email, bodyText);
-        DriverManager.waitUntilItemWillBeShown(gmailMainPage.getEmailSentToast());
-        DriverManager.waitUntilItemPresents(gmailMainPage.getUndoButton());
+        Waiters.waitUntilItemWillBeShown(loginPage.getUsernameField(), driver);
     }
 }

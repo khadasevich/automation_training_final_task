@@ -5,10 +5,11 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import listeners.TestListener;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tools.FakeMessages;
-import webdriver.DriverManager;
+import webdriver.Waiters;
 
 @Listeners(TestListener.class)
 @Epic("Final Task")
@@ -21,28 +22,31 @@ public class InboxTests extends BasicActionsForTest {
     @Test(priority = 1, description = "GM-4 Verify that sent email appears in Sent Mail folder")
     @Description("Test logs in to the email box sends an email and checks that email appears in the 'Sent' folder")
     public void emailAppearsInSentInboxTest() {
-        String expectedResult = FakeMessages.generateFakeMessage();
+        String generateFakeMessage = FakeMessages.generateFakeMessage();
         goThroughLogin(usernameOne, password);
-        sendEmail("usernametwo@yopmail.com", expectedResult);
+        gmailMainPage.composeAndSendEmail("usernametwo@yopmail.com", generateFakeMessage);
         gmailMainPage.openFirstSentMessage();
-        DriverManager.waitUntilItemWillBeShown(gmailMainPage.getReceivedEmailTextElement());
+        Waiters.waitUntilItemWillBeShown(gmailMainPage.getReceivedEmailTextElement(), driver);
         String actualResult = gmailMainPage.getReceivedEmailText();
-        Assert.assertEquals(actualResult, expectedResult);
-        removeAccountAfterLogout();
+        Assert.assertEquals(actualResult, generateFakeMessage);
     }
 
     @Test(priority = 1, description = "GM-5 Verify that deleted email is listed in Trash")
     @Description("Test logs in to the email box sends an email, deletes it and checks that email appears in the 'Trash' folder")
     public void removedEmailAppearsInTrashTest() {
-        String expectedResult = FakeMessages.generateFakeMessage();
+        String generateFakeMessage = FakeMessages.generateFakeMessage();
         goThroughLogin(usernameOne, password);
-        sendEmail("usernametwo@yopmail.com", expectedResult);
+        gmailMainPage.composeAndSendEmail("usernametwo@yopmail.com", generateFakeMessage);
         gmailMainPage.openFirstSentMessage();
         gmailMainPage.deleteMessage();
         gmailMainPage.openFirstTrashMessage();
-        DriverManager.waitUntilItemWillBeShown(gmailMainPage.getReceivedEmailTextElement());
-        String actualResult = gmailMainPage.getReceivedEmailText();
-        Assert.assertEquals(actualResult, expectedResult);
+        Waiters.waitUntilItemWillBeShown(gmailMainPage.getReceivedEmailTextElement(), driver);
+        String receivedEmailText = gmailMainPage.getReceivedEmailText();
+        Assert.assertEquals(receivedEmailText, generateFakeMessage);
+    }
+
+    @AfterMethod
+    public void logout() {
         removeAccountAfterLogout();
     }
 }

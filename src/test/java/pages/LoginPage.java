@@ -5,13 +5,11 @@ import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage {
+public class LoginPage extends WebAbstractPage {
 
     private final String baseGmailUrl = "https://gmail.com";
     private final String inboxUrl = "https://mail.google.com/mail/u/0/#inbox";
-    protected WebDriver driver;
 
     @FindBy(xpath = "//input[@id='identifierId']")
     @Getter private WebElement usernameField;
@@ -26,8 +24,7 @@ public class LoginPage {
     private WebElement passwordNextButton;
 
     public LoginPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(this.driver, this);
+        super(driver);
     }
 
     @Step("Go to the Gmail base URL")

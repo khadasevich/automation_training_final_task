@@ -3,6 +3,9 @@
 <suite name="Gmail Chrome tests" verbose="1">
 
     <parameter name="environment" value="local"/>
+    <parameter name = "usernameOne" value="seleniumtests10"/>
+    <parameter name = "usernameTwo" value="seleniumtests30"/>
+    <parameter name = "password" value="060788avavav"/>
 
     <test name="Chrome gmail tests">
         <parameter name="browser" value="chrome"/>

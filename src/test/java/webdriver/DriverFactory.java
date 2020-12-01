@@ -21,12 +21,19 @@ public class DriverFactory {
 
     private final String browser;
     WebDriver driver;
+    Properties properties;
     final static ChromeOptions chromeOptions = new ChromeOptions();
     final static FirefoxOptions firefoxOptions = new FirefoxOptions();
-    File file = new File("src\\test\\resources\\saucelabcreds.properties");
+    File file = new File("src\\test\\resources\\remotehubsurls.properties");
 
     public DriverFactory(String browser) {
         this.browser = browser.toLowerCase();
+        this.properties = new Properties();
+        try {
+            properties.load(new FileReader(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public WebDriver getLocalDriver() {
@@ -47,7 +54,7 @@ public class DriverFactory {
     }
 
     public WebDriver getRemoteGrid() {
-        String hubUrl = "http://192.168.0.2:4444/wd/hub";
+        String hubUrl = properties.getProperty("HUBURL");
         DesiredCapabilities capabilities = new DesiredCapabilities();
         switch (browser) {
             case "chrome":
@@ -68,12 +75,6 @@ public class DriverFactory {
     }
 
     public WebDriver getSauceDriver() {
-        Properties properties = new Properties();
-        try {
-            properties.load(new FileReader(file));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         String URL = "https://" + properties.getProperty("USERNAME") + ":" + properties.getProperty("ACCESS_KEY") +
                 "@ondemand.saucelabs.com:443/wd/hub";
         MutableCapabilities sauceOptions = new MutableCapabilities();
