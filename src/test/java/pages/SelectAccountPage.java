@@ -5,16 +5,18 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.Formatter;
+
 @Data
 public class SelectAccountPage extends WebAbstractPage{
 
-    @FindBy (css = "div > ul > li:nth-child(3)")
+    @FindBy (xpath = "//div[contains(text(), 'Remove')]")
     private WebElement removeAccountButton;
 
-    @FindBy (css = "div > ul > li:nth-child(1)")
+    @FindBy (xpath = "//div[contains(text(), '@gmail.com')]")
     private WebElement accountNameButton;
 
-    @FindBy (xpath = "(//span[contains(., 'seleniumtests10@gmail.com')]//following-sibling::div//div[@role='button'])[1]")
+   @FindBy (xpath = "//span[contains(text(), 'remove')]")
     private WebElement confirmDeleteButton;
 
     @FindBy (id = "initialView")

@@ -1,9 +1,11 @@
 package tests;
 
+import com.github.javafaker.Faker;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 import pages.GmailMainPage;
 import pages.LoginPage;
@@ -24,6 +26,8 @@ public class BaseTest {
     SelectAccountPage selectAccountPage;
     String filename = "src\\test\\resources\\test_data";
     Gson gson = new Gson();
+    String generateFakeMessage;
+    String generateFakeSubject;
 
     @BeforeClass
     @Parameters({"browser", "environment"})
@@ -34,7 +38,7 @@ public class BaseTest {
         gmailMainPage = new GmailMainPage(driver);
         selectAccountPage = new SelectAccountPage(driver);
         DriverManager.maximizeWindow();
-        DriverManager.setTimeout();
+        Waiters.setTimeout(driver);
     }
 
     @AfterClass
@@ -49,6 +53,24 @@ public class BaseTest {
                 .map(testData ->
                         testData.values().toArray()).toArray(Object[][]::new);
         return objects;
+    }
+
+    public static String generateFakeEmailBody() {
+        Faker faker = new Faker();
+        return faker.chuckNorris().fact();
+    }
+
+    public static String generateFakeEmailSubject() {
+        Faker faker = new Faker();
+        return faker.dragonBall().character();
+    }
+
+    @AfterMethod
+    public void afterMethod(ITestResult result) {
+        String methodName = result.getMethod().getMethodName();
+        if (methodName != "loginTest" & methodName != "logoutTest") {
+            signOut();
+        }
     }
 
     public void signIn(String username, String password) {

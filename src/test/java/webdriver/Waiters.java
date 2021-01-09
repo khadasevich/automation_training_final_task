@@ -8,11 +8,24 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 public class Waiters {
 
     private static FluentWait<WebDriver> fluentWait;
     private static WebDriverWait wait;
+
+    public static void setTimeout(WebDriver driver) {
+        driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
+        driver.manage().timeouts().setScriptTimeout(40, TimeUnit.SECONDS);
+    }
+
+    public static void removeTimeout(WebDriver driver) {
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(0, TimeUnit.SECONDS);
+        driver.manage().timeouts().setScriptTimeout(0, TimeUnit.SECONDS);
+    }
 
     public static void waitUntilItemWillBeShown(WebElement element, WebDriver driver) {
         fluentWait = new FluentWait<>(driver)

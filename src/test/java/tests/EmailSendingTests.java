@@ -6,7 +6,7 @@ import io.qameta.allure.Feature;
 import listeners.TestListener;
 import org.testng.Assert;
 import org.testng.annotations.*;
-import tools.FakeMessages;
+import java.util.concurrent.TimeUnit;
 
 @Listeners(TestListener.class)
 @Epic("Final Task")
@@ -19,19 +19,14 @@ public class EmailSendingTests extends BaseTest {
     public void sendEmailTest(@Optional("seleniumtests10") String usernameOne,
                               @Optional("seleniumtests30") String usernameTwo,
                               @Optional("060788avavav") String password) throws InterruptedException {
-        String generateFakeSubject = FakeMessages.generateFakeEmailSubject();
-        String generateFakeMessage = FakeMessages.generateFakeEmailBody();
+        generateFakeSubject = generateFakeEmailSubject();
+        generateFakeMessage = generateFakeEmailBody();
         signIn(usernameOne, password);
         gmailMainPage.composeAndSendEmail(usernameTwo + "@gmail.com", generateFakeSubject, generateFakeMessage);
         signOut();
-        Thread.sleep(5000);
+        TimeUnit.SECONDS.sleep(5);
         signIn(usernameTwo, password);
         String emailMessage = gmailMainPage.getEmailMessage();
         Assert.assertEquals(emailMessage, generateFakeMessage);
-    }
-
-    @AfterMethod
-    public void logout() {
-        signOut();
     }
 }

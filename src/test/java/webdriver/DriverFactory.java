@@ -15,8 +15,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 public class DriverFactory {
@@ -26,7 +24,7 @@ public class DriverFactory {
     Properties properties;
     final static ChromeOptions chromeOptions = new ChromeOptions();
     final static FirefoxOptions firefoxOptions = new FirefoxOptions();
-    File file = new File("src\\test\\resources\\remotehubsurls.properties");
+    File file = new File("src\\test\\resources\\driver.properties");
 
     public DriverFactory(String browser) {
         this.browser = browser.toLowerCase();
@@ -41,14 +39,12 @@ public class DriverFactory {
     public WebDriver getLocalDriver() {
         switch (browser) {
             case "chrome":
-                System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
-                WebDriverManager.chromedriver();
+                WebDriverManager.chromedriver().setup();
                 driver = new ChromeDriver(chromeOptions);
                 break;
 
             case "firefox":
-                System.setProperty("webdriver.gecko.driver", "src\\test\\resources\\geckodriver.exe");
-                WebDriverManager.firefoxdriver();
+                WebDriverManager.firefoxdriver().setup();
                 driver = new FirefoxDriver(firefoxOptions);
                 break;
         }
@@ -85,15 +81,15 @@ public class DriverFactory {
             case "chrome":
                 browserOptions.setBrowserName(DesiredCapabilities.chrome().getBrowserName());
                 browserOptions.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-                browserOptions.setCapability("platformName", "Windows 10");
-                browserOptions.setCapability("browserVersion", "latest");
+                browserOptions.setCapability("platformName", properties.getProperty("PLATFORM"));
+                browserOptions.setCapability("browserVersion", properties.getProperty("BROWSER"));
                 browserOptions.setCapability("sauce:options", sauceOptions);
                 break;
             case "firefox":
                 browserOptions.setBrowserName(DesiredCapabilities.firefox().getBrowserName());
                 browserOptions.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
-                browserOptions.setCapability("platformName", "Windows 10");
-                browserOptions.setCapability("browserVersion", "latest");
+                browserOptions.setCapability("platformName", properties.getProperty("PLATFORM"));
+                browserOptions.setCapability("browserVersion", properties.getProperty("BROWSER"));
                 browserOptions.setCapability("sauce:options", sauceOptions);
                 break;
         }
