@@ -16,7 +16,7 @@ public class SelectAccountPage extends WebAbstractPage{
     @FindBy (xpath = "//div[contains(text(), '@gmail.com')]")
     private WebElement accountNameButton;
 
-   @FindBy (xpath = "//span[contains(text(), 'remove')]")
+   @FindBy (xpath = "(//span[contains(text(), 'Yes, remove')])[2]")
     private WebElement confirmDeleteButton;
 
     @FindBy (id = "initialView")

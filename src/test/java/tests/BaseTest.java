@@ -20,7 +20,6 @@ import java.util.Map;
 
 public class BaseTest {
 
-    WebDriver driver;
     LoginPage loginPage;
     GmailMainPage gmailMainPage;
     SelectAccountPage selectAccountPage;
@@ -28,22 +27,24 @@ public class BaseTest {
     Gson gson = new Gson();
     String generateFakeMessage;
     String generateFakeSubject;
+    public WebDriver driver;
+    public DriverManager driverManager;
 
     @BeforeClass
     @Parameters({"browser", "environment"})
     protected void setUp(@Optional("chrome") String browser, @Optional("local") String environment) {
-        DriverManager.initWebDriver(environment, browser);
+        driverManager = new DriverManager(environment, browser);
         driver = DriverManager.getWebDriver();
         loginPage = new LoginPage(driver);
         gmailMainPage = new GmailMainPage(driver);
         selectAccountPage = new SelectAccountPage(driver);
-        DriverManager.maximizeWindow();
+        driverManager.maximizeWindow();
         Waiters.setTimeout(driver);
     }
 
     @AfterClass
     public void tearDown() {
-        DriverManager.quitDriver();
+        driverManager.quitDriver();
     }
 
     @DataProvider(name = "credentials")
