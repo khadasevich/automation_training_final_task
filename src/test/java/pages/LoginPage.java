@@ -1,21 +1,22 @@
 package pages;
 
 import io.qameta.allure.Step;
-import lombok.Getter;
+import lombok.Data;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+@Data
 public class LoginPage extends WebAbstractPage {
 
     private final String baseGmailUrl = "https://gmail.com";
     private final String inboxUrl = "https://mail.google.com/mail/u/0/#inbox";
 
     @FindBy(xpath = "//input[@id='identifierId']")
-    @Getter private WebElement usernameField;
+    private WebElement usernameInputField;
 
     @FindBy(xpath = "//div[@id='password']//descendant::input")
-    @Getter private WebElement passwordField;
+    private WebElement passwordInputField;
 
     @FindBy(xpath = "//*[@id='identifierNext']/div/button")
     private WebElement usernameNextButton;
@@ -34,13 +35,13 @@ public class LoginPage extends WebAbstractPage {
 
     @Step("Submit username {0}")
     public void submitUsername(String username) {
-        usernameField.sendKeys(username);
+        usernameInputField.sendKeys(username);
         usernameNextButton.click();
     }
 
     @Step("Submit password {0}")
     public void submitPassword(String password) {
-        passwordField.sendKeys(password);
+        passwordInputField.sendKeys(password);
         passwordNextButton.click();
     }
 

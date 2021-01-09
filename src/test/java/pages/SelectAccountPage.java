@@ -1,21 +1,21 @@
 package pages;
 
-import lombok.Getter;
+import lombok.Data;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
+@Data
 public class SelectAccountPage extends WebAbstractPage{
 
     @FindBy (css = "div > ul > li:nth-child(3)")
-    @Getter private WebElement removeAccount;
+    private WebElement removeAccountButton;
 
     @FindBy (css = "div > ul > li:nth-child(1)")
-    private WebElement accountName;
+    private WebElement accountNameButton;
 
     @FindBy (xpath = "(//span[contains(., 'seleniumtests10@gmail.com')]//following-sibling::div//div[@role='button'])[1]")
-    private WebElement confirmDelete;
+    private WebElement confirmDeleteButton;
 
     @FindBy (id = "initialView")
     private WebElement initialView;
@@ -25,9 +25,9 @@ public class SelectAccountPage extends WebAbstractPage{
     }
 
     public void removeAccount() {
-        removeAccount.click();
-        accountName.click();
-        confirmDelete.click();
+        removeAccountButton.click();
+        accountNameButton.click();
+        confirmDeleteButton.click();
     }
 
     public boolean checkInitialViewShown() {

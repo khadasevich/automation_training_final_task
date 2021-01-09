@@ -16,7 +16,7 @@ import java.io.FileReader;
 import java.util.List;
 import java.util.Map;
 
-public class BasicActionsForTest {
+public class BaseTest {
 
     WebDriver driver;
     LoginPage loginPage;
@@ -51,23 +51,23 @@ public class BasicActionsForTest {
         return objects;
     }
 
-    public void goThroughLogin(String username, String password) {
+    public void signIn(String username, String password) {
         loginPage.openLoginPage();
-        Waiters.waitUntilItemWillBeShown(loginPage.getUsernameField(), driver);
+        Waiters.waitUntilItemWillBeShown(loginPage.getUsernameInputField(), driver);
         loginPage.submitUsername(username);
-        Waiters.waitUntilItemWillBeShown(loginPage.getPasswordField(), driver);
+        Waiters.waitUntilItemWillBeShown(loginPage.getPasswordInputField(), driver);
         loginPage.submitPassword(password);
-        Waiters.waitUntilItemIsClickable(gmailMainPage.getComposeButton(), driver);
+        Waiters.waitUntilItemIsClickable(gmailMainPage.getComposeEmailButton(), driver);
     }
 
-    public void removeAccountAfterLogout() {
-        Waiters.waitUntilItemIsClickable(gmailMainPage.getUserIcon(), driver);
+    public void signOut() {
+        Waiters.waitUntilItemIsClickable(gmailMainPage.getUserNicknameButton(), driver);
         gmailMainPage.openProfileMenu();
         Waiters.waitUntilItemIsClickable(gmailMainPage.getLogOutButton(), driver);
         Waiters.waitWhileAlertPresent(driver);
         gmailMainPage.gmailLogout();
-        Waiters.waitUntilItemIsClickable(selectAccountPage.getRemoveAccount(), driver);
+        Waiters.waitUntilItemIsClickable(selectAccountPage.getRemoveAccountButton(), driver);
         selectAccountPage.removeAccount();
-        Waiters.waitUntilItemWillBeShown(loginPage.getUsernameField(), driver);
+        Waiters.waitUntilItemWillBeShown(loginPage.getUsernameInputField(), driver);
     }
 }

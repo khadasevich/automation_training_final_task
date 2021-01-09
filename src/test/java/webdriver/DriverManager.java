@@ -51,18 +51,4 @@ public class DriverManager {
     public static void maximizeWindow() {
         driver.get().manage().window().maximize();
     }
-
-    @Attachment
-    public static byte[] takeScreenshot() {
-        TakesScreenshot screenshot = ((TakesScreenshot) driver.get());
-        return screenshot.getScreenshotAs(OutputType.BYTES);
-    }
-
-    @Attachment
-    public static String getBrowserVersion() {
-        Capabilities caps = ((RemoteWebDriver) driver.get()).getCapabilities();
-        String browserName = caps.getBrowserName();
-        String browserVersion = caps.getVersion();
-        return browserName + " " + browserVersion;
-    }
 }

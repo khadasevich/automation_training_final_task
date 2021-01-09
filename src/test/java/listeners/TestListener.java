@@ -3,12 +3,9 @@ package listeners;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-import tests.BasicActionsForTest;
-import tools.DateTime;
-import tools.OsName;
-import webdriver.DriverManager;
+import tools.AllureService;
 
-public class TestListener extends BasicActionsForTest implements ITestListener {
+public class TestListener implements ITestListener {
     @Override
     public void onTestStart(ITestResult iTestResult) {
 
@@ -21,10 +18,10 @@ public class TestListener extends BasicActionsForTest implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult iTestResult) {
-        DateTime.getCurrentDateTime();
-        OsName.getOSName();
-        DriverManager.getBrowserVersion();
-        DriverManager.takeScreenshot();
+        AllureService.attachDateAndTime();
+        AllureService.attachOSName();
+        AllureService.attachBrowserVersion();
+        AllureService.attachScreenshot();
     }
 
     @Override
@@ -46,6 +43,4 @@ public class TestListener extends BasicActionsForTest implements ITestListener {
     public void onFinish(ITestContext iTestContext) {
 
     }
-
-
 }

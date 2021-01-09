@@ -1,9 +1,11 @@
 package pages;
 
+import lombok.Data;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 
+@Data
 public abstract class WebAbstractPage {
 
     protected WebDriver driver;
